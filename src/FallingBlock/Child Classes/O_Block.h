@@ -20,6 +20,9 @@ public:
         grid[1][0] = 1;
         grid[1][1] = 1;
     }
+    short getType() {
+        	return 4;
+	}
 };
 
 

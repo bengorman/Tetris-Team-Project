@@ -3,6 +3,7 @@
 
 #include "FallingBlock.h"
 
+
 class I_Block : public FallingBlock{
 
     /*
@@ -21,6 +22,9 @@ public:
         grid[1][1] = 1;
         grid[2][1] = 1;
         grid[3][1] = 1;
+    }
+    short getType() {
+    	return 1;
     }
 };
 

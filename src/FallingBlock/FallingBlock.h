@@ -14,12 +14,13 @@ protected:
     int xCoordinate; //anchor coordinate for piece in top left space
     int yCoordinate; //anchor coordinate for piece in top left space
 public:
-    void rotate();
+    void rotate(); //rotates currentFallingBlock
     int** getGrid();
     int getSize();
     int getXCoordinate();
     int getYCoordinate();
     void setYCoordinate(int y);
+    virtual short getType();
 };
 
 #endif /* FALLINGBLOCK_H_ */

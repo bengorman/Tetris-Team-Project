@@ -21,6 +21,9 @@ public:
         grid[2][1] = 1;
         grid[2][2] = 1;
     }
+    short getType() {
+        	return 3;
+	}
 };
 
 

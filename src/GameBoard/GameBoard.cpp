@@ -15,6 +15,7 @@ using namespace std;
 
 
 GameBoard::GameBoard() {
+	//creates an empty board
 	matrix = new int*[BOARDWIDTH];
 	for(int i = 0; i < BOARDWIDTH; i++) {
 		matrix[i] = new int[BOARDHEIGHT];
@@ -22,8 +23,8 @@ GameBoard::GameBoard() {
 			matrix[i][j] = 0;
 		}
 	}
-	currentFallingBlock = newFallingBlock(rand() % 7 + 1);
-	createNext();
+	currentFallingBlock = newFallingBlock(rand() % 7 + 1); //creates the first block
+	createNext(); //creates the first nextBlock
 }
 
 
@@ -37,8 +38,19 @@ void GameBoard::createNext() {
 }
 
 
+void GameBoard::updateScore(int height, short numFullRows) {
+	//TODO John Luzier
+}
+
+
 void GameBoard::descend() {
-	currentFallingBlock->setYCoordinate(currentFallingBlock->getYCoordinate() + 1);
+	if(!bottomCollision()) {
+		currentFallingBlock->setYCoordinate(currentFallingBlock->getYCoordinate() + 1);
+	}
+	else {
+		land();
+	}
+	draw();
 }
 
 
@@ -139,6 +151,9 @@ bool GameBoard::rotateCollision() {
 
 
 void GameBoard::newFallingBlock(int rand) {
+	if(currentFallingBlock != nullptr) {
+		delete *currentFallingBlock;
+	}
 	switch(rand) {
 		case 1:
 			currentFallingBlock = new I_Block();
@@ -165,5 +180,42 @@ void GameBoard::newFallingBlock(int rand) {
 }
 
 
+void GameBoard::land() {
+	//include currentFallingBlock into bottom geometry
+	int** grid = currentFallingBlock->getGrid();
+	for(int i = 0; i < currentFallingBlock->getSize; i++) {
+		for(int j = 0; j < currentFallingBlock->getSize; j++) {
+			if(grid[i][j] != 0) {
+				matrix[currentFallingBlock->getYCoordinate() + i][currentFallingBlock->getXCoordinate() + j] = grid[i][j];
+			}
+		}
+	}
+	//counts rows to be deleted and deletes rows
+	short numFullRows = 0;
+	for(int i = BOARDHEIGHT - 1; i > 1; i--) {
+		if(rowFull(i)) {
+			numFullRows++;	//counts number of deleted rows
+			for(int j = i; j > 1; j--) {	//deletes row and moves everything down
+				for(int k = 0; k < BOARDWIDTH; k++) {
+					matrix[j][k] = matrix[j - 1][k];
+				}
+			}
+		}
+	}
+	updateScore(currentFallingBlock->getYCoordinate() + currentFallingBlock->getSize() - 1, numFullRows);
+	newFallingBlock(nextBlock);
+	createNext();
+	swapped = false;
+}
+
+
+bool GameBoard::rowFull(int row) {
+	for(int j = 0; j < BOARDWIDTH; j++) {
+		if(matrix[row][j] == 0) {
+			return false;
+		}
+	}
+	return true;
+}
 
 
