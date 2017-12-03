@@ -1,10 +1,3 @@
-/*
- * GameBoard.h
- *
- *  Created on: Dec 2, 2017
- *      Author: Mom and Dad
- */
-
 #ifndef GAMEBOARD_GAMEBOARD_H_
 #define GAMEBOARD_GAMEBOARD_H_
 
