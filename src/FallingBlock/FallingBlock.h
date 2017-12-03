@@ -8,13 +8,17 @@ using namespace std;
 class FallingBlock{
     
 protected:
+	FallingBlock(int size);
     int **grid; // 2D grid
     int size; // Grid size
+    int xCoordinate; //anchor coordinate for piece in top left space
+    int yCoordinate; //anchor coordinate for piece in top left space
 public:
     void rotate();
-    void createGrid(int size);
     int** getGrid();
     int getSize();
+    int getXCoordinate();
+    int getYCoordinate();
 };
 
 #endif /* FALLINGBLOCK_H_ */

@@ -8,8 +8,11 @@ using namespace std;
 class GameBoard {
 public:
 	GameBoard();
+	void draw();
 	void updateBoard(FallingBlock currentFallingBlock);
-	void collision(FallingBlock currentFallingBlock);
+	bool translateCollision(FallingBlock currentFallingBlock);
+	bool rotateCollision(FallingBlock currentFallingBlock);
+	bool bottomCollision(FallingBlock currentFallingBlock);
 private:
 	int** matrix;
 };

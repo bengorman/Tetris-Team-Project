@@ -17,7 +17,6 @@ public:
     S_Block(){ // Configure original position of block and create grid
 
         size = 3; // 3 x 3
-        createGrid(size);
 
         // Default position
         grid[1][1] = 1;

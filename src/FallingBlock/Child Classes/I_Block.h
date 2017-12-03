@@ -7,10 +7,10 @@ class I_Block : public FallingBlock{
 
     /*
 
-     | 1 0 0 0 |
-     | 1 0 0 0 |
-     | 1 0 0 0 |
-     | 1 0 0 0 |
+     | 0 1 0 0 |
+     | 0 1 0 0 |
+     | 0 1 0 0 |
+     | 0 1 0 0 |
 
      */
 
@@ -18,13 +18,12 @@ public:
     I_Block(){ // Configure original position of block and create grid
 
         size = 4; // 3 x 3
-        createGrid(size);
 
         // Default position
-        grid[0][0] = 1;
-        grid[1][0] = 1;
-        grid[2][0] = 1;
-        grid[3][0] = 1;
+        grid[0][1] = 1;
+        grid[1][1] = 1;
+        grid[2][1] = 1;
+        grid[3][1] = 1;
     }
 };
 
