@@ -1,12 +1,12 @@
 #include "GameBoard.h"
-#include "FallingBlock.h"
-#include "I_Block.h"
-#include "J_Block.h"
-#include "L_Block.h"
-#include "O_Block.h"
-#include "S_Block.h"
-#include "T_Block.h"
-#include "Z_Block.h"
+#include "../FallingBlock/FallingBlock.h"
+#include "../FallingBlock/Child Classes/I_Block.h"
+#include "../FallingBlock/Child Classes/J_Block.h"
+#include "../FallingBlock/Child Classes/L_Block.h"
+#include "../FallingBlock/Child Classes/O_Block.h"
+#include "../FallingBlock/Child Classes/S_Block.h"
+#include "../FallingBlock/Child Classes/T_Block.h"
+#include "../FallingBlock/Child Classes/Z_Block.h"
 #include <cstdlib>
 using namespace std;
 
@@ -23,7 +23,7 @@ GameBoard::GameBoard() {
 			matrix[i][j] = 0;
 		}
 	}
-	currentFallingBlock = newFallingBlock(rand() % 7 + 1); //creates the first block
+	newFallingBlock(rand() % 7 + 1); //creates the first block
 	createNext(); //creates the first nextBlock
 }
 
@@ -123,7 +123,7 @@ bool GameBoard::rotateCollision() {
 			}
 		}
 	}
-	else if(myBlock->getXCoordinate + myBlock->getSize() > 10) {
+	else if(myBlock->getXCoordinate() + myBlock->getSize() > 10) {
 		for(int i = 0; i < myBlock->getSize(); i++) {
 			if(grid[i][myBlock->getSize() - 1] != 0) {
 				return true;
@@ -137,10 +137,10 @@ bool GameBoard::rotateCollision() {
 			}
 		}
 	}
-	for(int i = 0; i < myBlock->size(); i++) {
-		for(int j = 0; j < myBlock->size(); j++) {
+	for(int i = 0; i < myBlock->getSize(); i++) {
+		for(int j = 0; j < myBlock->getSize(); j++) {
 			if(grid[i][j] != 0) {
-				if(matrix[myBlock->getYCoordinate + i][myBlock->getXCoordinate + j] != 0) {
+				if(matrix[myBlock->getYCoordinate() + i][myBlock->getXCoordinate() + j] != 0) {
 					return true;
 				}
 			}
@@ -152,7 +152,7 @@ bool GameBoard::rotateCollision() {
 
 void GameBoard::newFallingBlock(int rand) {
 	if(currentFallingBlock != nullptr) {
-		delete *currentFallingBlock;
+		delete currentFallingBlock;
 	}
 	switch(rand) {
 		case 1:
@@ -183,8 +183,8 @@ void GameBoard::newFallingBlock(int rand) {
 void GameBoard::land() {
 	//include currentFallingBlock into bottom geometry
 	int** grid = currentFallingBlock->getGrid();
-	for(int i = 0; i < currentFallingBlock->getSize; i++) {
-		for(int j = 0; j < currentFallingBlock->getSize; j++) {
+	for(int i = 0; i < currentFallingBlock->getSize(); i++) {
+		for(int j = 0; j < currentFallingBlock->getSize(); j++) {
 			if(grid[i][j] != 0) {
 				matrix[currentFallingBlock->getYCoordinate() + i][currentFallingBlock->getXCoordinate() + j] = grid[i][j];
 			}

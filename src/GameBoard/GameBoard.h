@@ -2,7 +2,7 @@
 #define GAMEBOARD_GAMEBOARD_H_
 
 #include <iostream>
-#include "FallingBlock.h"
+#include "../FallingBlock/FallingBlock.h"
 using namespace std;
 
 class GameBoard {

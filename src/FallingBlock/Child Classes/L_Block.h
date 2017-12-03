@@ -1,7 +1,6 @@
 #ifndef L_BLOCK_H_
 #define L_BLOCK_H_
 
-#include "FallingBlock.h"
 
 class L_Block : public FallingBlock{
 
@@ -24,6 +23,7 @@ public:
     short getType() {
         	return 3;
 	}
+    ~L_Block() {};
 };
 
 

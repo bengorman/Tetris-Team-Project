@@ -14,6 +14,7 @@ protected:
     int xCoordinate; //anchor coordinate for piece in top left space
     int yCoordinate; //anchor coordinate for piece in top left space
 public:
+    virtual ~FallingBlock();
     void rotate(); //rotates currentFallingBlock
     int** getGrid();
     int getSize();

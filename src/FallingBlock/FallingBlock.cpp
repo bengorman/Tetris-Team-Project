@@ -21,6 +21,9 @@ FallingBlock::FallingBlock(int size) {
 }
 
 
+FallingBlock::~FallingBlock() {}
+
+
 void FallingBlock::rotate(){
 	int** newArr = new int*[size];
 	for(int i = 0; i < size; i++)
