@@ -14,10 +14,7 @@ class Z_Block : public FallingBlock{
      */
 
 public:
-    Z_Block(){ // Configure original position of block and create grid
-
-        size = 3; // 3 x 3
-
+    Z_Block() : FallingBlock(3){ // Configure original position of block and create grid
         // Default position
         grid[1][1] = 1;
         grid[1][0] = 1;

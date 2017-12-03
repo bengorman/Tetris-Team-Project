@@ -13,10 +13,7 @@ class O_Block : public FallingBlock{
      */
 
 public:
-    O_Block(){ // Configure original position of block and create grid
-
-        size = 2; // 2 x 2
-
+    O_Block() : FallingBlock(2 ){ // Configure original position of block and create grid
         // Default position
         grid[0][0] = 1;
         grid[0][1] = 1;

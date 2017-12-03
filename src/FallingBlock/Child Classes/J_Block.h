@@ -14,10 +14,7 @@ class J_Block : public FallingBlock{
      */
 
 public:
-    J_Block(){ // Configure original position of block and create grid
-
-        size = 3; // 3 x 3
-
+    J_Block() : FallingBlock(3) { // Configure original position of block and create grid
         // Default position
         grid[0][1] = 1;
         grid[1][1] = 1;

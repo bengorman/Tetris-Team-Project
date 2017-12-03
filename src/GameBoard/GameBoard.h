@@ -9,12 +9,18 @@ class GameBoard {
 public:
 	GameBoard();
 	void draw();
-	void updateBoard(FallingBlock currentFallingBlock);
-	bool translateCollision(FallingBlock currentFallingBlock);
-	bool rotateCollision(FallingBlock currentFallingBlock);
-	bool bottomCollision(FallingBlock currentFallingBlock);
+	void updateBoard();
+	bool translateLeftWallCollision();
+	bool translateRightWallCollision();
+	bool rotateWallCollision();
+	bool bottomWallCollision();
+	bool translateRightGeometryCollision();
+	bool translateLeftGeometryCollision();
+	bool rotateGeometryCollision();
+	bool bottomGeometryCollision();
 private:
 	int** matrix;
+	FallingBlock* currentFallingBlock;
 };
 
 

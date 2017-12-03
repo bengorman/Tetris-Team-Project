@@ -14,10 +14,7 @@ class T_Block : public FallingBlock{
      */
 
 public:
-    T_Block(){ // Configure original position of block and create grid
-
-        size = 3; // 3 x 3
-
+    T_Block() : FallingBlock(3) { // Configure original position of block and create grid
         // Default position
         grid[0][1] = 1;
         grid[1][0] = 1;
