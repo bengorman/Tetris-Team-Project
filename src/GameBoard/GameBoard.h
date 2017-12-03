@@ -10,14 +10,10 @@ public:
 	GameBoard();
 	void draw();
 	void updateBoard();
-	bool translateLeftWallCollision();
-	bool translateRightWallCollision();
-	bool rotateWallCollision();
-	bool bottomWallCollision();
-	bool translateRightGeometryCollision();
-	bool translateLeftGeometryCollision();
-	bool rotateGeometryCollision();
-	bool bottomGeometryCollision();
+	bool translateLeftCollision();
+	bool translateRightCollision();
+	bool rotateCollision();
+	bool bottomCollision();
 private:
 	int** matrix;
 	FallingBlock* currentFallingBlock;
