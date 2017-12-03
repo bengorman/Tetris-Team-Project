@@ -1,5 +1,13 @@
 #include "GameBoard.h"
 #include "FallingBlock.h"
+#include "I_Block.h"
+#include "J_Block.h"
+#include "L_Block.h"
+#include "O_Block.h"
+#include "S_Block.h"
+#include "T_Block.h"
+#include "Z_Block.h"
+#include <cstdlib>
 using namespace std;
 
 #define BOARDWIDTH 10
@@ -14,17 +22,23 @@ GameBoard::GameBoard() {
 			matrix[i][j] = 0;
 		}
 	}
-	currentFallingBlock = NULL;
+	currentFallingBlock = newFallingBlock(rand() % 7 + 1);
+	createNext();
 }
 
 
 void GameBoard::draw() {
-	//TODO
+	//TODO John Luzier
 }
 
 
-void GameBoard::updateBoard() {
-	//TODO
+void GameBoard::createNext() {
+	//TODO John Luzier
+}
+
+
+void GameBoard::descend() {
+	currentFallingBlock->setYCoordinate(currentFallingBlock->getYCoordinate() + 1);
 }
 
 
@@ -123,6 +137,32 @@ bool GameBoard::rotateCollision() {
 	return false;
 }
 
+
+void GameBoard::newFallingBlock(int rand) {
+	switch(rand) {
+		case 1:
+			currentFallingBlock = new I_Block();
+			break;
+		case 2:
+			currentFallingBlock = new J_Block();
+			break;
+		case 3:
+			currentFallingBlock = new L_Block();
+			break;
+		case 4:
+			currentFallingBlock = new O_Block();
+			break;
+		case 5:
+			currentFallingBlock = new S_Block();
+			break;
+		case 6:
+			currentFallingBlock = new T_Block();
+			break;
+		case 7:
+			currentFallingBlock = new Z_Block();
+			break;
+	}
+}
 
 
 

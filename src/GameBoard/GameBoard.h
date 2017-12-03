@@ -9,14 +9,17 @@ class GameBoard {
 public:
 	GameBoard();
 	void draw();
-	void updateBoard();
+	void createNext();
+	void descend();
 	bool translateLeftCollision();
 	bool translateRightCollision();
 	bool rotateCollision();
 	bool bottomCollision();
+	void newFallingBlock(int rand);
 private:
 	int** matrix;
 	FallingBlock* currentFallingBlock;
+	int nextFallingBlock;
 };
 
 

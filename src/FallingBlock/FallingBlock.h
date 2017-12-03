@@ -19,6 +19,7 @@ public:
     int getSize();
     int getXCoordinate();
     int getYCoordinate();
+    void setYCoordinate(int y);
 };
 
 #endif /* FALLINGBLOCK_H_ */

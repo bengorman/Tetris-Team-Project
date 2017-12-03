@@ -4,7 +4,7 @@ using namespace std;
 
 FallingBlock::FallingBlock(int size) {
 	this->size = size;
-	xCoordinate = 0;
+	xCoordinate = 4;
 	yCoordinate = 0;
 	// Creates space in grid
 	grid = new int*[size];
@@ -56,3 +56,9 @@ int FallingBlock::getXCoordinate() {
 int FallingBlock::getYCoordinate() {
 	return yCoordinate;
 }
+
+
+void FallingBlock::setYCoordinate(int y) {
+	yCoordinate = y;
+}
+
