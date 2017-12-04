@@ -1,23 +1,23 @@
-#ifndef CONTROLLER_H_
-#define CONTROLLER_H_
+/*
+#ifndef CONTROLLER_H_INCLUDED
+#define CONTROLLER_H_INCLUDED
 
 #include <thread>
-#include <Windows.h>
 
 using namespace std;
+
 
 class Controller
 {
 	private:
-		Thread fallThread(GameBoard.descend());
-		Thread keyThread(scanInput());
+		Thread gameThread;
 
 	public:
-		Controller();
-		char scanInput();	
+
 
 
 };
 
 
 #endif
+*/

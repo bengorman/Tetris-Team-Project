@@ -2,7 +2,11 @@
 #define GAMEBOARD_H_
 
 #include <iostream>
+#include <cstdlib>
+#include <exception>
+#include <windows.h>
 #include "../FallingBlock/FallingBlock.h"
+#include "Icon.h"
 using namespace std;
 
 class GameBoard {
@@ -23,6 +27,11 @@ private:
 	bool swapped; //bool if a swap has occurred (1 is allowed)
 	short oldXCoordinate;
 	short oldYCoordinate;
+	Icon nextIcon;
+	Icon storedIcon;
+	unsigned int score;
+	unsigned short lines;
+	unsigned short level;
 	void display(); //helper function to draw
 	void drawToMatrix(); //draws the currentFallingBlock's coordinates on the matrix
 	bool translateLeftCollision(); //checks to see if a left translation is possible
@@ -33,6 +42,7 @@ private:
 	void land(); //includes currentFallingBlock into the bottom geometry, checks for full rows, deletes rows, and calls updateScore() with info
 	void newFallingBlock(int rand); //creates a new currentFallingBlock from nextBlock
 	void createNext(); //randomly creates the next nextBlock
+	void display(int line);
 };
 
 
