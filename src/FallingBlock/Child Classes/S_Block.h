@@ -1,6 +1,7 @@
 #ifndef S_BLOCK_H_
 #define S_BLOCK_H_
 
+#include "../FallingBlock.h"
 
 class S_Block : public FallingBlock{
 

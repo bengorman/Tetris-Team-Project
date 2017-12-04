@@ -22,7 +22,7 @@ public:
     int getYCoordinate();
     void setYCoordinate(int y);
     void setXCoordinate(int x);
-    virtual short getType();
+    virtual short getType() = 0;
 };
 
 #endif /* FALLINGBLOCK_H_ */

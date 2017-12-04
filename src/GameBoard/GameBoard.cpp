@@ -1,13 +1,7 @@
 #include "GameBoard.h"
-#include "../FallingBlock/FallingBlock.h"
-#include "../FallingBlock/Child Classes/I_Block.h"
-#include "../FallingBlock/Child Classes/J_Block.h"
-#include "../FallingBlock/Child Classes/L_Block.h"
-#include "../FallingBlock/Child Classes/O_Block.h"
-#include "../FallingBlock/Child Classes/S_Block.h"
-#include "../FallingBlock/Child Classes/T_Block.h"
-#include "../FallingBlock/Child Classes/Z_Block.h"
 #include <cstdlib>
+#include <ctime>
+#include <string>
 using namespace std;
 
 #define BOARDWIDTH 10
@@ -15,27 +9,37 @@ using namespace std;
 
 
 GameBoard::GameBoard() {
+	srand(time(0));
 	//creates an empty board
-	matrix = new int*[BOARDWIDTH];
-	for(int i = 0; i < BOARDWIDTH; i++) {
-		matrix[i] = new int[BOARDHEIGHT];
-		for(int j = 0; j < BOARDHEIGHT; j++) {
+	cout << "0.1" << endl;
+	matrix = new int*[BOARDHEIGHT];
+	for(int i = 0; i < BOARDHEIGHT; i++) {
+		matrix[i] = new int[BOARDWIDTH];
+		for(int j = 0; j < BOARDWIDTH; j++) {
 			matrix[i][j] = 0;
 		}
 	}
-	newFallingBlock(rand() % 7 + 1); //creates the first block
-	storedIcon = new Icon;
-	nextIcon = new Icon;
+	cout << "0.2" << endl;
+	currentFallingBlock = nullptr;
+
+	cout << "0.3" << endl;
 	createNext(); //creates the first nextBlock
+	cout << "0.4" << endl;
 	swapped = false;
-	oldXCoordinate = currentFallingBlock->getXCoordinate();
-	oldYCoordinate = currentFallingBlock->getYCoordinate();
-	drawToMatrix();
+	cout << "0.5" << endl;
+
+
+	cout << "0.6" << endl;
 	storedBlock = 0;
 	storedIcon.setType(0);
+	cout << "0.7" << endl;
 	score = 0;
 	lines = 0;
 	level = 0;
+	newFallingBlock(rand() % 7 + 1); //creates the first block
+	oldXCoordinate = currentFallingBlock->getXCoordinate();
+	oldYCoordinate = currentFallingBlock->getYCoordinate();
+	drawToMatrix();
 }
 
 
@@ -180,9 +184,13 @@ bool GameBoard::rotateCollision() {
 
 
 void GameBoard::newFallingBlock(int rand) {
+	cout << "0.2.0" << endl;
 	if(currentFallingBlock != nullptr) {
+		cout << "0.2.0.a" << endl;
 		delete currentFallingBlock;
+		cout << "0.2.0.b" << endl;
 	}
+	cout << "0.2.1" << endl;
 	switch(rand) {
 		case 1:
 			currentFallingBlock = new I_Block();
@@ -206,7 +214,9 @@ void GameBoard::newFallingBlock(int rand) {
 			currentFallingBlock = new Z_Block();
 			break;
 	}
+	cout << "0.2.2" << endl;
 	draw();
+	cout << "0.2.3" << endl;
 }
 
 
@@ -253,15 +263,24 @@ bool GameBoard::rowFull(int row) {
 
 void GameBoard::drawToMatrix() {
 	int** grid = currentFallingBlock->getGrid();
+	/*
 	for(int i = oldYCoordinate; i < currentFallingBlock->getSize() + oldYCoordinate; i++) {
 		for(int j = oldXCoordinate; j < currentFallingBlock->getSize() + oldXCoordinate; j++) {
 			matrix[i][j] = 0;
 		}
 	}
+	*/
+	for(int i = 0; i < BOARDHEIGHT - 2; i++) {
+		for(int j = 0; j < BOARDWIDTH; j++) {
+			if(matrix[i][j] < 0) {
+				matrix[i][j] = 0;
+			}
+		}
+	}
 	for(int i = 0; i < currentFallingBlock->getSize(); i++) {
 		for(int j = 0; j < currentFallingBlock->getSize(); j++) {
 			if(grid[i][j] < 0) {
-				matrix[currentFallingBlock->getYCoordinate + i][currentFallingBlock->getXCoordinate + j] = grid[i][j];
+				matrix[currentFallingBlock->getYCoordinate() + i][currentFallingBlock->getXCoordinate() + j] = grid[i][j];
 			}
 		}
 	}
@@ -302,7 +321,6 @@ void GameBoard::display(int line) //displays a line of the game board
 	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(h, 8);
 	cout << " ██";
-	short color;
 	for(int i=0; i<10; i++)
 	{
 		if(matrix[line][i]==0)
@@ -312,11 +330,12 @@ void GameBoard::display(int line) //displays a line of the game board
 		else
 		{
 			SetConsoleTextAttribute(h, 8+abs(matrix[line][i]));
-			cout << "▓▓";
+			printf("▓▓");
+
 		}
 	}
 	SetConsoleTextAttribute(h, 8);
-	cout <<  "██";
+	printf("██");
 	SetConsoleTextAttribute(h, 15);
 }
 
@@ -324,9 +343,9 @@ void GameBoard::display(int line) //displays a line of the game board
 void GameBoard::draw() //displays GUI
 {
 	system("cls"); //clears console
-	cout << "                    ╔══════╗\n";
-	cout << "                    ║Tetris║\n";
-	cout << "════════════════════╩══════╩════════════════════";
+	cout << "                     ╔══════╗\n";
+	cout << "                     ║Tetris║\n";
+	cout << " ════════════════════╩══════╩════════════════════\n";
 	cout << " ████████████████████████   Score: " << score << "\n";
 	display(2);
 	cout << "\n";
@@ -355,21 +374,37 @@ void GameBoard::draw() //displays GUI
 	display(14);
 	cout << "\n";
 	display(15);
-	cout << "  ╔════════╗ ╔════════╗\n";
+	cout << "  ╔══════════╗ ╔══════════╗\n";
 	display(16);
-	cout << "  ║  Next  ║ ║ Stored ║\n";
+	cout << "  ║   Next   ║ ║  Stored  ║\n";
 	display(17);
-	cout << "  ╠════════╣ ╠════════╣\n";
+	cout << "  ╠══════════╣ ╠══════════╣\n";
 	display(18);
-	cout << "  ║" << nextIcon.dispLine(0) << "║ ║" << storedIcon.dispLine(0) << "║\n";
+	cout << "  ║ ";
+	cout << nextIcon.dispLine(0);
+	cout << " ║ ║ ";
+	cout << storedIcon.dispLine(0);
+	cout << " ║\n";
 	display(19);
-	cout << "  ║" << nextIcon.dispLine(1) << "║ ║" << storedIcon.dispLine(1) << "║\n";
+	cout << "  ║ ";
+	cout << nextIcon.dispLine(1);
+	cout << " ║ ║ ";
+	cout << storedIcon.dispLine(1);
+	cout << " ║\n";
 	display(20);
-	cout << "  ║" << nextIcon.dispLine(2) << "║ ║" << storedIcon.dispLine(2) << "║\n";
+	cout << "  ║ ";
+	cout << nextIcon.dispLine(2);
+	cout << " ║ ║ ";
+	cout<< storedIcon.dispLine(2);
+	cout << " ║\n";
 	display(21);
-	cout << "  ║" << nextIcon.dispLine(3) << "║ ║" << storedIcon.dispLine(3) << "║\n";
-	cout << " ████████████████████████  ╚════════╝ ╚════════╝\n";
-	cout << "════════════════════════════════════════════════\n";
+	cout << "  ║ ";
+	cout << nextIcon.dispLine(3);
+	cout << " ║ ║";
+	cout << storedIcon.dispLine(3);
+	cout << "  ║\n";
+	cout << " ████████████████████████   ╚══════════╝ ╚══════════╝\n";
+	cout << " ════════════════════════════════════════════════\n";
 }
 
 
@@ -384,8 +419,11 @@ void GameBoard::draw() //displays GUI
  */
 void GameBoard::createNext() //generates next block to be used
 {
+	cout << "X";
 	nextBlock = rand() % 7 + 1; //picks a random piece
+	cout << "Y";
 	nextIcon.setType(nextBlock);
+	cout << "Z";
 }
 
 
@@ -408,7 +446,8 @@ void GameBoard::updateScore(int fell, short rows) { //updates the score
 		score += 1200 * (level+1);
 		break;
 	default:
-		throw invalid_argument;
+		throw "number must be between 0 and 4";
+		break;
 	}
 }
 

@@ -15,17 +15,19 @@ private:
 	short color;
 
 public:
-	void dispLine(short line)
+	string dispLine(short line)
 	{
 		HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
 		SetConsoleTextAttribute(h, color);
 		cout << icon[line];
 		SetConsoleTextAttribute(h, 15);
+		return "";
 	}
 
 	void setType(short type)
 	{
 		color = 8 + type;
+		cout << "switch";
 		switch(type) //makes the icon the correct one
 		{
 		case 1:
@@ -70,12 +72,12 @@ public:
 			icon[2] = "   ▓▓▓▓ ";
 			icon[3] = "        ";
 			break;
-		}
 		default:
 			icon[0] = "        ";
 			icon[1] = "        ";
 			icon[2] = "        ";
 			icon[3] = "        ";
+		}
 	}
 };
 

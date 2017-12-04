@@ -6,7 +6,14 @@
 #include <exception>
 #include <windows.h>
 #include "../FallingBlock/FallingBlock.h"
-#include "Icon.h"
+#include "../Icon.h"
+#include "../FallingBlock/Child Classes/I_Block.h"
+#include "../FallingBlock/Child Classes/J_Block.h"
+#include "../FallingBlock/Child Classes/L_Block.h"
+#include "../FallingBlock/Child Classes/O_Block.h"
+#include "../FallingBlock/Child Classes/S_Block.h"
+#include "../FallingBlock/Child Classes/T_Block.h"
+#include "../FallingBlock/Child Classes/Z_Block.h"
 using namespace std;
 
 class GameBoard {
