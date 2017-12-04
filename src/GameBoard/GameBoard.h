@@ -50,6 +50,8 @@ private:
 	void newFallingBlock(int rand); //creates a new currentFallingBlock from nextBlock
 	void createNext(); //randomly creates the next nextBlock
 	void display(int line);
+	void updateOldCoordinates();
+	HANDLE h;
 };
 
 

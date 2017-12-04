@@ -10,6 +10,7 @@ using namespace std;
 
 GameBoard::GameBoard() {
 	srand(time(0));
+	h = GetStdHandle(STD_OUTPUT_HANDLE);
 	//creates an empty board
 	cout << "0.1" << endl;
 	matrix = new int*[BOARDHEIGHT];
@@ -44,7 +45,9 @@ GameBoard::GameBoard() {
 
 
 void GameBoard::descend() {
+
 	if(!bottomCollision()) {
+		updateOldCoordinates();
 		currentFallingBlock->setYCoordinate(currentFallingBlock->getYCoordinate() + 1); //increments location of fallingBlock downwards
 		drawToMatrix();
 	}
@@ -52,6 +55,12 @@ void GameBoard::descend() {
 		land();
 	}
 	draw();
+}
+
+
+void GameBoard::updateOldCoordinates() {
+	oldXCoordinate = currentFallingBlock->getXCoordinate();
+	oldYCoordinate = currentFallingBlock->getYCoordinate();
 }
 
 
@@ -127,16 +136,32 @@ bool GameBoard::translateRightCollision() {
 
 bool GameBoard::bottomCollision() {
 	int** grid = currentFallingBlock->getGrid();
+	/*
 	if(currentFallingBlock->getYCoordinate() + currentFallingBlock->getSize() > 21) {
 		for(int j = 0; j < currentFallingBlock->getSize(); j++) {
-			if(grid[currentFallingBlock->getSize()][j] != 0) {
+			if(grid[currentFallingBlock->getSize() - 1][j] != 0) {
+				return true;
+			}
+		}
+	}
+	if(currentFallingBlock->getYCoordinate() + currentFallingBlock->getSize() > 22) {
+		for(int j = 0; j < currentFallingBlock->getSize(); j++) {
+			if(grid[currentFallingBlock->getSize() - 2][j] != 0) {
+				return true;
+			}
+		}
+	}
+	*/
+	for(int i = 0; i < currentFallingBlock->getSize(); i++) {
+		for(int j = 0; j < currentFallingBlock->getSize(); j++) {
+			if(grid[i][j] != 0 && currentFallingBlock->getYCoordinate() + i >= BOARDHEIGHT - 1) {
 				return true;
 			}
 		}
 	}
 	for(int i = 0; i < currentFallingBlock->getSize(); i++) {
 		for(int j = 0; j < currentFallingBlock->getSize(); j++) {
-			if(matrix[currentFallingBlock->getYCoordinate() + i + 1][currentFallingBlock->getXCoordinate() + j] > 0) {
+			if(grid[i][j] != 0 && matrix[currentFallingBlock->getYCoordinate() + i + 1][currentFallingBlock->getXCoordinate() + j] > 0) {
 				return true;
 			}
 		}
@@ -221,6 +246,7 @@ void GameBoard::newFallingBlock(int rand) {
 
 
 void GameBoard::land() {
+	cout << "landed";
 	//include currentFallingBlock into bottom geometry
 	int** grid = currentFallingBlock->getGrid();
 	for(int i = 0; i < currentFallingBlock->getSize(); i++) {
@@ -263,17 +289,13 @@ bool GameBoard::rowFull(int row) {
 
 void GameBoard::drawToMatrix() {
 	int** grid = currentFallingBlock->getGrid();
-	/*
-	for(int i = oldYCoordinate; i < currentFallingBlock->getSize() + oldYCoordinate; i++) {
-		for(int j = oldXCoordinate; j < currentFallingBlock->getSize() + oldXCoordinate; j++) {
-			matrix[i][j] = 0;
-		}
-	}
-	*/
-	for(int i = 0; i < BOARDHEIGHT - 2; i++) {
-		for(int j = 0; j < BOARDWIDTH; j++) {
-			if(matrix[i][j] < 0) {
-				matrix[i][j] = 0;
+	for(int i = 0; i < currentFallingBlock->getSize(); i++) {
+		for(int j = 0; j < currentFallingBlock->getSize(); j++) {
+			if(oldXCoordinate + j > 9 || oldXCoordinate + j < 0) {
+				continue;
+			}
+			else if(matrix[oldYCoordinate + i][oldXCoordinate + j] < 0) {
+				matrix[oldYCoordinate + i][oldXCoordinate + j] = 0;
 			}
 		}
 	}
@@ -289,6 +311,7 @@ void GameBoard::drawToMatrix() {
 
 void GameBoard::translateLeft() {
 	if(!translateLeftCollision()) {
+		updateOldCoordinates();
 		oldXCoordinate = currentFallingBlock->getXCoordinate();
 		currentFallingBlock->setXCoordinate(currentFallingBlock->getXCoordinate() - 1);
 		drawToMatrix();
@@ -299,6 +322,7 @@ void GameBoard::translateLeft() {
 
 void GameBoard::translateRight() {
 	if(!translateRightCollision()) {
+		updateOldCoordinates();
 		oldXCoordinate = currentFallingBlock->getXCoordinate();
 		currentFallingBlock->setXCoordinate(currentFallingBlock->getXCoordinate() + 1);
 		drawToMatrix();
@@ -318,9 +342,8 @@ void GameBoard::rotateCW() {
 
 void GameBoard::display(int line) //displays a line of the game board
 {
-	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(h, 8);
-	cout << " ██";
+	cout << "  ██";
 	for(int i=0; i<10; i++)
 	{
 		if(matrix[line][i]==0)
@@ -343,10 +366,13 @@ void GameBoard::display(int line) //displays a line of the game board
 void GameBoard::draw() //displays GUI
 {
 	system("cls"); //clears console
-	cout << "                     ╔══════╗\n";
-	cout << "                     ║Tetris║\n";
-	cout << " ════════════════════╩══════╩════════════════════\n";
-	cout << " ████████████████████████   Score: " << score << "\n";
+	cout << "                     ╔════════╗\n";
+	cout << "                     ║ Tetris ║\n";
+	cout << " ════════════════════╩════════╩════════════════════\n";
+	SetConsoleTextAttribute(h, 8);
+	cout << "  ████████████████████████";
+	SetConsoleTextAttribute(h, 15);
+	cout << "   Score: " << score << "\n";
 	display(2);
 	cout << "\n";
 	display(3);
@@ -374,37 +400,40 @@ void GameBoard::draw() //displays GUI
 	display(14);
 	cout << "\n";
 	display(15);
-	cout << "  ╔══════════╗ ╔══════════╗\n";
+	cout << "  ╔════════╗ ╔════════╗\n";
 	display(16);
-	cout << "  ║   Next   ║ ║  Stored  ║\n";
+	cout << "  ║  Next  ║ ║ Stored ║\n";
 	display(17);
-	cout << "  ╠══════════╣ ╠══════════╣\n";
+	cout << "  ╠════════╣ ╠════════╣\n";
 	display(18);
-	cout << "  ║ ";
+	cout << "  ║";
 	cout << nextIcon.dispLine(0);
-	cout << " ║ ║ ";
+	printf("║ ║");
 	cout << storedIcon.dispLine(0);
-	cout << " ║\n";
+	printf("║\n");
 	display(19);
-	cout << "  ║ ";
+	cout << "  ║";
 	cout << nextIcon.dispLine(1);
-	cout << " ║ ║ ";
+	printf("║ ║");
 	cout << storedIcon.dispLine(1);
-	cout << " ║\n";
+	printf("║\n");
 	display(20);
-	cout << "  ║ ";
+	cout << "  ║";
 	cout << nextIcon.dispLine(2);
-	cout << " ║ ║ ";
+	printf("║ ║");
 	cout<< storedIcon.dispLine(2);
-	cout << " ║\n";
+	printf("║\n");
 	display(21);
-	cout << "  ║ ";
+	cout << "  ║";
 	cout << nextIcon.dispLine(3);
-	cout << " ║ ║";
+	printf("║ ║");
 	cout << storedIcon.dispLine(3);
-	cout << "  ║\n";
-	cout << " ████████████████████████   ╚══════════╝ ╚══════════╝\n";
-	cout << " ════════════════════════════════════════════════\n";
+	printf("║\n");
+	SetConsoleTextAttribute(h, 8);
+	cout << "  ████████████████████████";
+	SetConsoleTextAttribute(h, 15);
+	cout << "  ╚════════╝ ╚════════╝\n";
+	cout << " ══════════════════════════════════════════════════\n";
 }
 
 

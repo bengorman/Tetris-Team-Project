@@ -15,7 +15,16 @@ int main() {
 	cout << "1" << endl;
 	myBoard.draw();
 	cout << "2" << endl;
-	for(int i = 0; i < 19; i++) {
+	int one;
+	while(true) {
+		cin >> one;
+		if(one == 'a') {
+			myBoard.translateLeft();
+		}
+		cin >> one;
+		if(one == 'd') {
+			myBoard.translateRight();
+		}
 		myBoard.descend();
 	}
 	cout << "3" << endl;
