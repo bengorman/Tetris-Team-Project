@@ -29,11 +29,9 @@ void FallingBlock::rotate(){
 	for(int i = 0; i < size; i++)
 		newArr[i] = new int[size];
 
-	int x = 0;
-	for(int i = 0; i < getSize(); i++){
-		for(int j = getSize()-1; j >= 0; j--) {
-			newArr[i][x++] = getGrid()[j][i]; // Rotates each section 90 degress clockwise
-		x = 0;
+	for(int i = 0; i < size; i++){
+		for(int j = 0; j < size; j++) {
+			newArr[i][j] = grid[size - j - 1][i]; // Rotates each section 90 degress clockwise
 		}
 	}
 

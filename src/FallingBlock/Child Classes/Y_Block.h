@@ -1,8 +1,8 @@
-#ifndef Z_BLOCK_H_
-#define Z_BLOCK_H_
+#ifndef Y_BLOCK_H_
+#define Y_BLOCK_H_
 
 
-class Z_Block : public FallingBlock{
+class Y_Block : public FallingBlock{
 
     /*
 
@@ -13,19 +13,19 @@ class Z_Block : public FallingBlock{
      */
 
 public:
-    Z_Block() : FallingBlock(3){ // Configure original position of block and create grid
+    Y_Block() : FallingBlock(3){ // Configure original position of block and create grid
         // Default position
-        grid[1][1] = -9;
-        grid[1][0] = -9;
-        grid[2][1] = -9;
-        grid[2][2] = -9;
+        grid[0][0] = -2;
+        grid[0][2] = -2;
+        grid[1][1] = -2;
+        grid[2][1] = -2;
     }
     short getType() {
         	return 9;
 	}
-    ~Z_Block() {};
+    ~Y_Block() {};
 };
 
 
 
-#endif /* Z_BLOCK_H_ */
+#endif /* Y_BLOCK_H_ */

@@ -27,7 +27,7 @@ GameBoard::GameBoard() {
 	score = 0;
 	lines = 0;
 	level = 0;
-	newFallingBlock(rand() % 7 + 1); //creates the first block
+	newFallingBlock(rand() % 10 + 1); //creates the first block
 	oldXCoordinate = currentFallingBlock->getXCoordinate();
 	oldYCoordinate = currentFallingBlock->getYCoordinate();
 	drawToMatrix();
@@ -154,34 +154,45 @@ bool GameBoard::bottomCollision() {
 
 
 bool GameBoard::rotateCollision() {
-	FallingBlock* myBlock = currentFallingBlock;
-	int** grid = myBlock->getGrid();
-	myBlock->rotate();
-	if(myBlock->getXCoordinate() == -1) {
-		for(int i = 0; i < myBlock->getSize(); i++) {
+	int** grid = currentFallingBlock->getGrid();
+	int** newArr = new int*[currentFallingBlock->getSize()];
+	for(int i = 0; i < currentFallingBlock->getSize(); i++)
+		newArr[i] = new int[currentFallingBlock->getSize()];
+
+	for(int i = 0; i < currentFallingBlock->getSize(); i++){
+		for(int j = 0; j < currentFallingBlock->getSize(); j++) {
+			newArr[i][j] = grid[currentFallingBlock->getSize() - j - 1][i]; // Rotates each section 90 degress clockwise
+			cout << newArr[i][j] << " ";
+		}
+		cout << endl;
+	}
+
+	grid = newArr;
+	if(currentFallingBlock->getXCoordinate() == -1) {
+		for(int i = 0; i < currentFallingBlock->getSize(); i++) {
 			if(grid[i][0] != 0) {
 				return true;
 			}
 		}
 	}
-	else if(myBlock->getXCoordinate() + myBlock->getSize() > 10) {
-		for(int i = 0; i < myBlock->getSize(); i++) {
-			if(grid[i][myBlock->getSize() - 1] != 0) {
+	else if(currentFallingBlock->getXCoordinate() + currentFallingBlock->getSize() > 10) {
+		for(int i = 0; i < currentFallingBlock->getSize(); i++) {
+			if(grid[i][currentFallingBlock->getSize() - 1] != 0) {
 				return true;
 			}
 		}
 	}
-	else if(myBlock->getYCoordinate() + myBlock->getSize() > 21) {
-		for(int j = 0; j < myBlock->getSize(); j++) {
-			if(grid[myBlock->getSize()][j] != 0) {
+	else if(currentFallingBlock->getYCoordinate() + currentFallingBlock->getSize() > 21) {
+		for(int j = 0; j < currentFallingBlock->getSize(); j++) {
+			if(grid[currentFallingBlock->getSize()][j] != 0) {
 				return true;
 			}
 		}
 	}
-	for(int i = 0; i < myBlock->getSize(); i++) {
-		for(int j = 0; j < myBlock->getSize(); j++) {
+	for(int i = 0; i < currentFallingBlock->getSize(); i++) {
+		for(int j = 0; j < currentFallingBlock->getSize(); j++) {
 			if(grid[i][j] != 0) {
-				if(matrix[myBlock->getYCoordinate() + i][myBlock->getXCoordinate() + j] > 0) {
+				if(matrix[currentFallingBlock->getYCoordinate() + i][currentFallingBlock->getXCoordinate() + j] > 0) {
 					return true;
 				}
 			}
@@ -217,6 +228,15 @@ void GameBoard::newFallingBlock(int rand) {
 		case 7:
 			currentFallingBlock = new Z_Block();
 			break;
+		case 8:
+			currentFallingBlock = new U_Block();
+			break;
+		case 9:
+			currentFallingBlock = new Y_Block();
+			break;
+		case 10:
+			currentFallingBlock = new Plus_Block();
+			break;
 	}
 	//draw();
 }
@@ -242,6 +262,11 @@ void GameBoard::land() {
 					matrix[j][k] = matrix[j - 1][k];
 				}
 			}
+		}
+	}
+	for(int i = 0; i < BOARDWIDTH; i++) {
+		if(matrix[1][i] != 0) {
+			throw "GAME OVER";
 		}
 	}
 	updateScore(currentFallingBlock->getYCoordinate() + currentFallingBlock->getSize() - 1, numFullRows);
@@ -307,14 +332,10 @@ void GameBoard::translateRight() {
 
 
 void GameBoard::rotateCW() {
-	cout << "rotate1";
 	if(!rotateCollision()) {
-		cout << "rotate2";
 		currentFallingBlock->rotate();
 		drawToMatrix();
 	}
-	cout << "rotate3";
-	//draw();
 }
 
 
@@ -343,10 +364,10 @@ void GameBoard::display(int line) //displays a line of the game board
 
 void GameBoard::draw() //displays GUI
 {
-	//system("cls"); //clears console
-	cout << "                     ╔════════╗\n";
-	cout << "                     ║ Tetris ║\n";
-	cout << " ════════════════════╩════════╩════════════════════\n";
+	system("cls"); //clears console
+	cout << "                     ╔══════════╗\n";
+	cout << "                     ║ Text-ris ║\n";
+	cout << " ════════════════════╩══════════╩════════════════════\n";
 	SetConsoleTextAttribute(h, 8);
 	cout << "  ████████████████████████";
 	SetConsoleTextAttribute(h, 15);
@@ -426,7 +447,7 @@ void GameBoard::draw() //displays GUI
  */
 void GameBoard::createNext() //generates next block to be used
 {
-	nextBlock = rand() % 7 + 1; //picks a random piece
+	nextBlock = rand() % 10 + 1; //picks a random piece
 	nextIcon.setType(nextBlock);
 }
 

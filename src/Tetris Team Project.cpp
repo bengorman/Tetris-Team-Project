@@ -16,6 +16,8 @@
 
 using namespace std;
 
+bool stillRunning = true;
+
 void scanInput(GameBoard *board)
 {
     //cout << "\nScan Input runs\n";
@@ -23,17 +25,25 @@ void scanInput(GameBoard *board)
 
     //this_thread::sleep_for(chrono::seconds(2));
 
-    while(key_code != 'q')
+    inputLoop:
+    while(stillRunning)
     {
         if(_kbhit())
         {
             key_code = _getch();
-
+            /*
             if(key_code == PAUSEKEY)
             {
-                cout << "\nPaused\n";
+                switch(pauseMenu()) {
+					case 'p':
+						break;
+					case 'q':
+						exit(0);
+						break;
+                }
             }
-            else if(key_code == SWAPKEY)
+            */
+            /*else */if(key_code == SWAPKEY)
             {
                 board->swap();
             }
@@ -51,7 +61,14 @@ void scanInput(GameBoard *board)
             }
             else if(key_code == DOWNKEY)
             {
-                board->descend();
+            	try {
+            		board->descend();
+            	}
+                catch(...) {
+                	cout << "GAME OVER";
+                	stillRunning = false;
+
+                }
             }
 
         }
@@ -61,15 +78,25 @@ void scanInput(GameBoard *board)
         }
         board->draw();
     }
+    //gameOver();
 }
 
 void descend(GameBoard *board)
 {
-    while(true)
+	descendLoop:
+    while(stillRunning)
     {
-    	board->descend();
+    	try {
+			board->descend();
+		}
+		catch(...) {
+			cout << "GAME OVER";
+			stillRunning = false;
+		}
         this_thread::sleep_for(chrono::milliseconds(1000));
     }
+    while(!stillRunning) {}
+    goto descendLoop;
 }
 
 int main()

@@ -14,6 +14,9 @@
 #include "../FallingBlock/Child Classes/S_Block.h"
 #include "../FallingBlock/Child Classes/T_Block.h"
 #include "../FallingBlock/Child Classes/Z_Block.h"
+#include "../FallingBlock/Child Classes/U_Block.h"
+#include "../FallingBlock/Child Classes/Y_Block.h"
+#include "../FallingBlock/Child Classes/Plus_Block.h"
 using namespace std;
 
 class GameBoard {

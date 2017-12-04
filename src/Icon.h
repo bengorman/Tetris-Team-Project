@@ -26,7 +26,7 @@ public:
 
 	void setType(short type)
 	{
-		color = 8 + type;
+		color = 8 + (type - 1) % 7 + 1;
 		switch(type) //makes the icon the correct one
 		{
 		case 1:
@@ -70,6 +70,24 @@ public:
 			icon[1] = " ▓▓▓▓   ";
 			icon[2] = "   ▓▓▓▓ ";
 			icon[3] = "        ";
+			break;
+		case 8:
+			icon[0] = "        ";
+			icon[1] = " ▓▓  ▓▓ ";
+			icon[2] = " ▓▓▓▓▓▓ ";
+			icon[3] = "        ";
+			break;
+		case 9:
+			icon[0] = "        ";
+			icon[1] = " ▓▓  ▓▓ ";
+			icon[2] = "   ▓▓   ";
+			icon[3] = "   ▓▓   ";
+			break;
+		case 10:
+			icon[0] = "        ";
+			icon[1] = "   ▓▓   ";
+			icon[2] = " ▓▓▓▓▓▓ ";
+			icon[3] = "   ▓▓   ";
 			break;
 		default:
 			icon[0] = "        ";
