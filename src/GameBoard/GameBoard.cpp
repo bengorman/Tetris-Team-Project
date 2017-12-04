@@ -12,7 +12,6 @@ GameBoard::GameBoard() {
 	srand(time(0));
 	h = GetStdHandle(STD_OUTPUT_HANDLE);
 	//creates an empty board
-	cout << "0.1" << endl;
 	matrix = new int*[BOARDHEIGHT];
 	for(int i = 0; i < BOARDHEIGHT; i++) {
 		matrix[i] = new int[BOARDWIDTH];
@@ -20,20 +19,11 @@ GameBoard::GameBoard() {
 			matrix[i][j] = 0;
 		}
 	}
-	cout << "0.2" << endl;
 	currentFallingBlock = nullptr;
-
-	cout << "0.3" << endl;
 	createNext(); //creates the first nextBlock
-	cout << "0.4" << endl;
 	swapped = false;
-	cout << "0.5" << endl;
-
-
-	cout << "0.6" << endl;
 	storedBlock = 0;
 	storedIcon.setType(0);
-	cout << "0.7" << endl;
 	score = 0;
 	lines = 0;
 	level = 0;
@@ -54,7 +44,7 @@ void GameBoard::descend() {
 	else {
 		land();
 	}
-	draw();
+	//draw();
 }
 
 
@@ -66,30 +56,35 @@ void GameBoard::updateOldCoordinates() {
 
 bool GameBoard::translateLeftCollision() {
 	int** grid = currentFallingBlock->getGrid();
+	cout << currentFallingBlock->getXCoordinate();
 	if(currentFallingBlock->getXCoordinate() == 0) {
 		for(int i = 0; i < currentFallingBlock->getSize(); i++) {
-			if(grid[i][0] != 0) {
+			if(grid[i][0] < 0) {
+				cout << "returns true1";
 				return true;
 			}
 		}
 	}
 	else if(currentFallingBlock->getXCoordinate() == -1) {
 		for(int i = 0; i < currentFallingBlock->getSize(); i++) {
-			if(grid[i][0] != 0 || grid[i][1] != 0) {
+			if(grid[i][1] < 0) {
 				return true;
 			}
 		}
 	}
 	else if(currentFallingBlock->getXCoordinate() == -2) {
 		for(int i = 0; i < currentFallingBlock->getSize(); i++) {
-			if(grid[i][0] != 0 || grid[i][2] != 0) {
+			if(grid[i][2] < 0) {
 				return true;
 			}
 		}
 	}
 	for(int i = 0; i < currentFallingBlock->getSize(); i++) {
 		for(int j = 0; j < currentFallingBlock->getSize(); j++) {
-			if(matrix[currentFallingBlock->getYCoordinate() + i][currentFallingBlock->getXCoordinate() + j - 1] != 0) {
+			if(currentFallingBlock->getXCoordinate() + j - 1 < 0) {
+				continue;
+			}
+			else if(grid[i][j] != 0 && matrix[currentFallingBlock->getYCoordinate() + i][currentFallingBlock->getXCoordinate() + j - 1] > 0) {
 				return true;
 			}
 		}
@@ -125,10 +120,14 @@ bool GameBoard::translateRightCollision() {
 	}
 	for(int i = 0; i < currentFallingBlock->getSize(); i++) {
 		for(int j = 0; j < currentFallingBlock->getSize(); j++) {
-			if(matrix[currentFallingBlock->getYCoordinate() + i][currentFallingBlock->getXCoordinate() + j + 1] > 0) {
+			if(currentFallingBlock->getXCoordinate() + j + 1 > 9) {
+				continue;
+			}
+			else if(grid[i][j] != 0 && matrix[currentFallingBlock->getYCoordinate() + i][currentFallingBlock->getXCoordinate() + j + 1] > 0) {
 				return true;
 			}
 		}
+
 	}
 	return false;
 }
@@ -136,22 +135,6 @@ bool GameBoard::translateRightCollision() {
 
 bool GameBoard::bottomCollision() {
 	int** grid = currentFallingBlock->getGrid();
-	/*
-	if(currentFallingBlock->getYCoordinate() + currentFallingBlock->getSize() > 21) {
-		for(int j = 0; j < currentFallingBlock->getSize(); j++) {
-			if(grid[currentFallingBlock->getSize() - 1][j] != 0) {
-				return true;
-			}
-		}
-	}
-	if(currentFallingBlock->getYCoordinate() + currentFallingBlock->getSize() > 22) {
-		for(int j = 0; j < currentFallingBlock->getSize(); j++) {
-			if(grid[currentFallingBlock->getSize() - 2][j] != 0) {
-				return true;
-			}
-		}
-	}
-	*/
 	for(int i = 0; i < currentFallingBlock->getSize(); i++) {
 		for(int j = 0; j < currentFallingBlock->getSize(); j++) {
 			if(grid[i][j] != 0 && currentFallingBlock->getYCoordinate() + i >= BOARDHEIGHT - 1) {
@@ -209,13 +192,9 @@ bool GameBoard::rotateCollision() {
 
 
 void GameBoard::newFallingBlock(int rand) {
-	cout << "0.2.0" << endl;
 	if(currentFallingBlock != nullptr) {
-		cout << "0.2.0.a" << endl;
 		delete currentFallingBlock;
-		cout << "0.2.0.b" << endl;
 	}
-	cout << "0.2.1" << endl;
 	switch(rand) {
 		case 1:
 			currentFallingBlock = new I_Block();
@@ -239,14 +218,11 @@ void GameBoard::newFallingBlock(int rand) {
 			currentFallingBlock = new Z_Block();
 			break;
 	}
-	cout << "0.2.2" << endl;
-	draw();
-	cout << "0.2.3" << endl;
+	//draw();
 }
 
 
 void GameBoard::land() {
-	cout << "landed";
 	//include currentFallingBlock into bottom geometry
 	int** grid = currentFallingBlock->getGrid();
 	for(int i = 0; i < currentFallingBlock->getSize(); i++) {
@@ -256,7 +232,6 @@ void GameBoard::land() {
 			}
 		}
 	}
-	draw();
 	//counts rows to be deleted and deletes rows
 	short numFullRows = 0;
 	for(int i = BOARDHEIGHT - 1; i > 1; i--) {
@@ -273,7 +248,7 @@ void GameBoard::land() {
 	newFallingBlock(nextBlock);
 	createNext();
 	swapped = false;	//resets swapped bool for new currentFallingBlock
-	draw();
+	//draw();
 }
 
 
@@ -316,7 +291,7 @@ void GameBoard::translateLeft() {
 		currentFallingBlock->setXCoordinate(currentFallingBlock->getXCoordinate() - 1);
 		drawToMatrix();
 	}
-	draw();
+	//draw();
 }
 
 
@@ -327,16 +302,19 @@ void GameBoard::translateRight() {
 		currentFallingBlock->setXCoordinate(currentFallingBlock->getXCoordinate() + 1);
 		drawToMatrix();
 	}
-	draw();
+	//draw();
 }
 
 
 void GameBoard::rotateCW() {
+	cout << "rotate1";
 	if(!rotateCollision()) {
+		cout << "rotate2";
 		currentFallingBlock->rotate();
 		drawToMatrix();
 	}
-	draw();
+	cout << "rotate3";
+	//draw();
 }
 
 
@@ -365,7 +343,7 @@ void GameBoard::display(int line) //displays a line of the game board
 
 void GameBoard::draw() //displays GUI
 {
-	system("cls"); //clears console
+	//system("cls"); //clears console
 	cout << "                     ╔════════╗\n";
 	cout << "                     ║ Tetris ║\n";
 	cout << " ════════════════════╩════════╩════════════════════\n";
@@ -448,11 +426,8 @@ void GameBoard::draw() //displays GUI
  */
 void GameBoard::createNext() //generates next block to be used
 {
-	cout << "X";
 	nextBlock = rand() % 7 + 1; //picks a random piece
-	cout << "Y";
 	nextIcon.setType(nextBlock);
-	cout << "Z";
 }
 
 
@@ -486,6 +461,7 @@ void GameBoard::swap() { //swaps currentBlock with storedBlock
 	{
 		return;
 	}
+	updateOldCoordinates();
 	short tempBlock = currentFallingBlock->getType();
 	if(storedBlock != 0) {
 		newFallingBlock(storedBlock);
@@ -497,6 +473,7 @@ void GameBoard::swap() { //swaps currentBlock with storedBlock
 	storedBlock = tempBlock;
 	storedIcon.setType(storedBlock);
 	swapped = true;
+	drawToMatrix();
 }
 
 

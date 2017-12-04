@@ -27,7 +27,6 @@ public:
 	void setType(short type)
 	{
 		color = 8 + type;
-		cout << "switch";
 		switch(type) //makes the icon the correct one
 		{
 		case 1:
