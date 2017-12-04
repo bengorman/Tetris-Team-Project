@@ -75,10 +75,20 @@ bool GameBoard::translateLeftCollision() {
 			}
 		}
 	}
-	for(int i = 0; i < currentFallingBlock->getSize(); i++) {
-		if(matrix[currentFallingBlock->getYCoordinate() + i][currentFallingBlock->getXCoordinate() - 1] != 0) {
-			return true;
+	else if(currentFallingBlock->getXCoordinate() == -2) {
+		for(int i = 0; i < currentFallingBlock->getSize(); i++) {
+			if(grid[i][0] != 0 || grid[i][2] != 0) {
+				return true;
+			}
 		}
+	}
+	for(int i = 0; i < currentFallingBlock->getSize(); i++) {
+		for(int j = 0; j < currentFallingBlock->getSize(); j++) {
+			if(matrix[currentFallingBlock->getYCoordinate() + i][currentFallingBlock->getXCoordinate() + j - 1] != 0) {
+				return true;
+			}
+		}
+
 	}
 	return false;
 }
@@ -87,16 +97,32 @@ bool GameBoard::translateLeftCollision() {
 bool GameBoard::translateRightCollision() {
 	int** grid = currentFallingBlock->getGrid();
 	int temp = currentFallingBlock->getXCoordinate() + currentFallingBlock->getSize();
-	if(temp == 10 || temp == 11 || temp == 13) {
+	if(temp  == 10) {
 		for(int i = 0; i < currentFallingBlock->getSize(); i++) {
 			if(grid[i][currentFallingBlock->getSize() - 1] != 0) {
 				return true;
 			}
 		}
 	}
+	else if(temp == 11) {
+		for(int i = 0; i < currentFallingBlock->getSize(); i++) {
+			if(grid[i][currentFallingBlock->getSize() - 2] != 0) {
+				return true;
+			}
+		}
+	}
+	else if(temp == 12) {
+		for(int i = 0; i < currentFallingBlock->getSize(); i++) {
+			if(grid[i][currentFallingBlock->getSize() - 3] != 0) {
+				return true;
+			}
+		}
+	}
 	for(int i = 0; i < currentFallingBlock->getSize(); i++) {
-		if(matrix[currentFallingBlock->getYCoordinate() + i][currentFallingBlock->getXCoordinate() + currentFallingBlock->getSize()] != 0) {
-			return true;
+		for(int j = 0; j < currentFallingBlock->getSize(); j++) {
+			if(matrix[currentFallingBlock->getYCoordinate() + i][currentFallingBlock->getXCoordinate() + j + 1] > 0) {
+				return true;
+			}
 		}
 	}
 	return false;
@@ -104,17 +130,17 @@ bool GameBoard::translateRightCollision() {
 
 
 bool GameBoard::bottomCollision() {
-	int** grid2 = currentFallingBlock->getGrid();
+	int** grid = currentFallingBlock->getGrid();
 	if(currentFallingBlock->getYCoordinate() + currentFallingBlock->getSize() > 21) {
 		for(int j = 0; j < currentFallingBlock->getSize(); j++) {
-			if(grid2[currentFallingBlock->getSize()][j] != 0) {
+			if(grid[currentFallingBlock->getSize()][j] != 0) {
 				return true;
 			}
 		}
 	}
 	for(int i = 0; i < currentFallingBlock->getSize(); i++) {
 		for(int j = 0; j < currentFallingBlock->getSize(); j++) {
-			if(matrix[currentFallingBlock->getXCoordinate() + i + 1][currentFallingBlock->getYCoordinate() + j] != 0) {
+			if(matrix[currentFallingBlock->getYCoordinate() + i + 1][currentFallingBlock->getXCoordinate() + j] > 0) {
 				return true;
 			}
 		}
@@ -151,7 +177,7 @@ bool GameBoard::rotateCollision() {
 	for(int i = 0; i < myBlock->getSize(); i++) {
 		for(int j = 0; j < myBlock->getSize(); j++) {
 			if(grid[i][j] != 0) {
-				if(matrix[myBlock->getYCoordinate() + i][myBlock->getXCoordinate() + j] != 0) {
+				if(matrix[myBlock->getYCoordinate() + i][myBlock->getXCoordinate() + j] > 0) {
 					return true;
 				}
 			}
@@ -197,8 +223,8 @@ void GameBoard::land() {
 	int** grid = currentFallingBlock->getGrid();
 	for(int i = 0; i < currentFallingBlock->getSize(); i++) {
 		for(int j = 0; j < currentFallingBlock->getSize(); j++) {
-			if(grid[i][j] != 0) {
-				matrix[currentFallingBlock->getYCoordinate() + i][currentFallingBlock->getXCoordinate() + j] = grid[i][j];
+			if(grid[i][j] < 0) {
+				matrix[currentFallingBlock->getYCoordinate() + i][currentFallingBlock->getXCoordinate() + j] = grid[i][j] * -1;
 			}
 		}
 	}
@@ -270,7 +296,7 @@ void GameBoard::translateRight() {
 }
 
 
-void GameBoard::rotateCaller() {
+void GameBoard::rotateCW() {
 	if(!rotateCollision()) {
 		currentFallingBlock->rotate();
 		drawToMatrix();
