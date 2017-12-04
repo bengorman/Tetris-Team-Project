@@ -8,7 +8,7 @@ using namespace std;
 #define BOARDHEIGHT 22
 
 
-GameBoard::GameBoard() {
+GameBoard::GameBoard(short dif) {
 	srand(time(0));
 	h = GetStdHandle(STD_OUTPUT_HANDLE);
 	//creates an empty board
@@ -26,7 +26,7 @@ GameBoard::GameBoard() {
 	storedIcon.setType(0);
 	score = 0;
 	lines = 0;
-	level = 0;
+	level = dif;
 	newFallingBlock(rand() % 10 + 1); //creates the first block
 	oldXCoordinate = currentFallingBlock->getXCoordinate();
 	oldYCoordinate = currentFallingBlock->getYCoordinate();

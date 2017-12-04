@@ -21,7 +21,7 @@ using namespace std;
 
 class GameBoard {
 public:
-	GameBoard();
+	GameBoard(short dif);
 	void draw(); //draws the board
 	void descend(); //moves currentFallingBlock down if possible. calls land() if it hits the bottom
 	void updateScore(int height, short numFullRows); //increments score when a piece lands
@@ -29,6 +29,7 @@ public:
 	void translateLeft();
 	void translateRight();
 	void rotateCW();
+	unsigned short level;
 private:
 	int** matrix; //stores all already fallen blocks
 	FallingBlock* currentFallingBlock; //block being controlled
@@ -41,7 +42,7 @@ private:
 	Icon storedIcon;
 	unsigned int score;
 	unsigned short lines;
-	unsigned short level;
+
 	void display(); //helper function to draw
 	void drawToMatrix(); //draws the currentFallingBlock's coordinates on the matrix
 	bool translateLeftCollision(); //checks to see if a left translation is possible
