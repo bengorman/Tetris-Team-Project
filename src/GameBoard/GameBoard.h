@@ -20,12 +20,18 @@ public:
 	bool rowFull(int row); //checks to see if the row is full
 	void updateScore(int height, short numFullRows); //increments score when a piece lands
 	void swap(); //swaps the storedBlock with the currentFallingBlock
+	void drawToMatrix();
+	void translateLeft();
+	void translateRight();
+	void rotateCaller();
 private:
 	int** matrix; //stores all already fallen blocks
 	FallingBlock* currentFallingBlock; //block being controlled
 	short nextBlock; //identifies the shape of the next block
 	short storedBlock; //identifies the shape of the stored block
 	bool swapped; //bool if a swap has occurred (1 is allowed)
+	short oldXCoordinate;
+	short oldYCoordinate;
 };
 
 

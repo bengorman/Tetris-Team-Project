@@ -21,6 +21,7 @@ public:
     int getXCoordinate();
     int getYCoordinate();
     void setYCoordinate(int y);
+    void setXCoordinate(int x)
     virtual short getType();
 };
 

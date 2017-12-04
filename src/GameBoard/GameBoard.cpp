@@ -23,8 +23,12 @@ GameBoard::GameBoard() {
 			matrix[i][j] = 0;
 		}
 	}
+
 	newFallingBlock(rand() % 7 + 1); //creates the first block
 	createNext(); //creates the first nextBlock
+	oldXCoordinate = currentFallingBlock->getXCoordinate();
+	oldYCoordinate = currentFallingBlock->getYCoordinate();
+	drawToMatrix();
 }
 
 
@@ -46,6 +50,7 @@ void GameBoard::updateScore(int height, short numFullRows) {
 void GameBoard::descend() {
 	if(!bottomCollision()) {
 		currentFallingBlock->setYCoordinate(currentFallingBlock->getYCoordinate() + 1); //increments location of fallingBlock downwards
+		drawToMatrix();
 	}
 	else {
 		land();
@@ -56,10 +61,16 @@ void GameBoard::descend() {
 
 bool GameBoard::translateLeftCollision() {
 	int** grid = currentFallingBlock->getGrid();
-	int temp = currentFallingBlock->getXCoordinate() + currentFallingBlock->getSize();
-	if(currentFallingBlock->getXCoordinate() == 0 || currentFallingBlock->getXCoordinate() == -1) {
+	if(currentFallingBlock->getXCoordinate() == 0) {
 		for(int i = 0; i < currentFallingBlock->getSize(); i++) {
 			if(grid[i][0] != 0) {
+				return true;
+			}
+		}
+	}
+	else if(currentFallingBlock->getXCoordinate() == -1) {
+		for(int i = 0; i < currentFallingBlock->getSize(); i++) {
+			if(grid[i][0] != 0 || grid[i][1] != 0) {
 				return true;
 			}
 		}
@@ -219,6 +230,52 @@ bool GameBoard::rowFull(int row) {
 		}
 	}
 	return true;
+}
+
+
+void GameBoard::drawToMatrix() {
+	int** grid = currentFallingBlock->getGrid();
+	for(int i = oldYCoordinate; i < currentFallingBlock->getSize() + oldYCoordinate; i++) {
+		for(int j = oldXCoordinate; j < currentFallingBlock->getSize() + oldXCoordinate; j++) {
+			matrix[i][j] = 0;
+		}
+	}
+	for(int i = 0; i < currentFallingBlock->getSize(); i++) {
+		for(int j = 0; j < currentFallingBlock->getSize(); j++) {
+			if(grid[i][j] < 0) {
+				matrix[currentFallingBlock->getYCoordinate + i][currentFallingBlock->getXCoordinate + j] = grid[i][j];
+			}
+		}
+	}
+}
+
+
+void GameBoard::translateLeft() {
+	if(!translateLeftCollision()) {
+		oldXCoordinate = currentFallingBlock->getXCoordinate();
+		currentFallingBlock->setXCoordinate(currentFallingBlock->getXCoordinate() - 1);
+		drawToMatrix();
+	}
+	draw();
+}
+
+
+void GameBoard::translateRight() {
+	if(!translateRightCollision()) {
+		oldXCoordinate = currentFallingBlock->getXCoordinate();
+		currentFallingBlock->setXCoordinate(currentFallingBlock->getXCoordinate() + 1);
+		drawToMatrix();
+	}
+	draw();
+}
+
+
+void GameBoard::rotateCaller() {
+	if(!rotateCollision()) {
+		currentFallingBlock->rotate();
+		drawToMatrix();
+	}
+	draw();
 }
 
 

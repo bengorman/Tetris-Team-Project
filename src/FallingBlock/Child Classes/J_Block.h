@@ -13,12 +13,12 @@ class J_Block : public FallingBlock{
      */
 
 public:
-    J_Block() : FallingBlock(2) { // Configure original position of block and create grid
+    J_Block() : FallingBlock(3) { // Configure original position of block and create grid
         // Default position
-        grid[0][1] = 1;
-        grid[1][1] = 1;
-        grid[2][1] = 1;
-        grid[2][0] = 1;
+        grid[0][1] = -2;
+        grid[1][1] = -2;
+        grid[2][1] = -2;
+        grid[2][0] = -2;
     }
     short getType() {
         	return 2;

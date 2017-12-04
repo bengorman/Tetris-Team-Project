@@ -15,10 +15,10 @@ class T_Block : public FallingBlock{
 public:
     T_Block() : FallingBlock(3) { // Configure original position of block and create grid
         // Default position
-        grid[0][1] = 1;
-        grid[1][0] = 1;
-        grid[1][1] = 1;
-        grid[1][2] = 1;
+        grid[0][1] = -6;
+        grid[1][0] = -6;
+        grid[1][1] = -6;
+        grid[1][2] = -6;
     }
     short getType() {
         	return 6;

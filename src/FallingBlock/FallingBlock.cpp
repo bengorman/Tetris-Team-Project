@@ -65,3 +65,8 @@ void FallingBlock::setYCoordinate(int y) {
 	yCoordinate = y;
 }
 
+
+void FallingBlock::setXCoordinate(int x) {
+	xCoordinate = x;
+}
+

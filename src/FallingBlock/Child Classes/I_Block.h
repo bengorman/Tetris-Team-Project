@@ -17,10 +17,10 @@ class I_Block : public FallingBlock{
 public:
     I_Block() : FallingBlock(4) { // Configure original position of block and create grid
         // Default position
-        grid[0][1] = 1;
-        grid[1][1] = 1;
-        grid[2][1] = 1;
-        grid[3][1] = 1;
+        grid[0][1] = -1;
+        grid[1][1] = -1;
+        grid[2][1] = -1;
+        grid[3][1] = -1;
     }
     short getType() {
     	return 1;

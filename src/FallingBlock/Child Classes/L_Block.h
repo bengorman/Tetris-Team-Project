@@ -15,10 +15,10 @@ class L_Block : public FallingBlock{
 public:
     L_Block() : FallingBlock(3) { // Configure original position of block and create grid
         // Default position
-        grid[0][1] = 1;
-        grid[1][1] = 1;
-        grid[2][1] = 1;
-        grid[2][2] = 1;
+        grid[0][1] = -3;
+        grid[1][1] = -3;
+        grid[2][1] = -3;
+        grid[2][2] = -3;
     }
     short getType() {
         	return 3;
