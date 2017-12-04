@@ -45,7 +45,7 @@ void GameBoard::updateScore(int height, short numFullRows) {
 
 void GameBoard::descend() {
 	if(!bottomCollision()) {
-		currentFallingBlock->setYCoordinate(currentFallingBlock->getYCoordinate() + 1);
+		currentFallingBlock->setYCoordinate(currentFallingBlock->getYCoordinate() + 1); //increments location of fallingBlock downwards
 	}
 	else {
 		land();
@@ -177,6 +177,7 @@ void GameBoard::newFallingBlock(int rand) {
 			currentFallingBlock = new Z_Block();
 			break;
 	}
+	draw();
 }
 
 
@@ -190,6 +191,7 @@ void GameBoard::land() {
 			}
 		}
 	}
+	draw();
 	//counts rows to be deleted and deletes rows
 	short numFullRows = 0;
 	for(int i = BOARDHEIGHT - 1; i > 1; i--) {
@@ -205,7 +207,8 @@ void GameBoard::land() {
 	updateScore(currentFallingBlock->getYCoordinate() + currentFallingBlock->getSize() - 1, numFullRows);
 	newFallingBlock(nextBlock);
 	createNext();
-	swapped = false;
+	swapped = false;	//resets swapped bool for new currentFallingBlock
+	draw();
 }
 
 
