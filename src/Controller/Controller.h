@@ -1,5 +1,5 @@
-#ifndef CONTROLLER_H_INCLUDED
-#define CONTROLLER_H_INCLUDED
+#ifndef CONTROLLER_H_
+#define CONTROLLER_H_
 
 #include <thread>
 #include <Windows.h>
